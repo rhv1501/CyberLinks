@@ -37,16 +37,16 @@ const page = () => {
   };
   return (
     <>
-      <div className="flex flex-col gap-4 items-center justify-center h-screen">
-        <div className="w-[30%] bg-purple-500 p-4 rounded-lg shadow-lg">
-          <div className="font-bold text-3xl text-center mb-2">
+      <div className="flex flex-col gap-4 items-center justify-center h-screen w-screen">
+        <div className="w-full bg-purple-500 p-4 rounded-lg shadow-lg lg:w-[30%]">
+          <div className="font-bold text-lg text-center mb-2">
             Shorten your link
           </div>
           <div className="flex flex-col gap-4 items-center">
             <input
               type="text"
               placeholder="Enter your link here"
-              className="p-2 rounded-lg w-96 text-black"
+              className="p-2 rounded-lg w-80 text-black lg:w-96"
               name="url"
               onChange={(e) => {
                 setUrl(e.target.value);
@@ -56,7 +56,7 @@ const page = () => {
             <input
               type="text"
               placeholder="Enter your custom short link name"
-              className="p-2 rounded-lg w-96 text-black"
+              className="p-2 rounded-lg w-80 text-black lg:w-96"
               name="shorturl"
               onChange={(e) => {
                 setShorturl(e.target.value);
