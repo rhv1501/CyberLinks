@@ -1,14 +1,27 @@
 import clientPromise from "@/lib/mongodb";
 
-export async function POST(Request) {
-  if (Request.method === "OPTIONS") {
+// Helper function to set CORS headers
+function setCorsHeaders(customHeaders = {}) {
+  return {
+    ...customHeaders,
+    "Access-Control-Allow-Origin": "https://www.example.com", // Replace with your allowed origin or use "*" if no credentials
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Credentials": "true", // Remove if credentials aren't required
+  };
+}
+
+export async function POST(request) {
+  // Handle preflight OPTIONS request
+  if (request.method === "OPTIONS") {
     return new Response(null, {
       status: 200,
+      headers: setCorsHeaders(),
     });
   }
 
   try {
-    const body = await Request.json();
+    const body = await request.json();
     console.log(body);
 
     const client = await clientPromise;
@@ -23,9 +36,7 @@ export async function POST(Request) {
           message: "Short URL already exists",
         }),
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: setCorsHeaders({ "Content-Type": "application/json" }),
         }
       );
     }
@@ -37,9 +48,7 @@ export async function POST(Request) {
         shorturl: body.shorturl,
       }),
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: setCorsHeaders({ "Content-Type": "application/json" }),
       }
     );
   } catch (e) {
@@ -47,12 +56,10 @@ export async function POST(Request) {
       JSON.stringify({
         err: true,
         message: "Error connecting to database",
-        error: e,
+        error: e.toString(),
       }),
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: setCorsHeaders({ "Content-Type": "application/json" }),
       }
     );
   }
