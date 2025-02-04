@@ -47,6 +47,8 @@ export async function POST(request) {
       );
     }
 
+    await collection.insertOne({ shorturl: body.shorturl });
+
     return new Response(
       JSON.stringify({
         err: false,
