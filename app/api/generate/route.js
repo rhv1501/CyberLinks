@@ -4,10 +4,10 @@ import clientPromise from "@/lib/mongodb";
 function setCorsHeaders(customHeaders = {}) {
   return {
     ...customHeaders,
-    "Access-Control-Allow-Origin": "https://www.example.com", // Replace with your allowed origin or use "*" if no credentials
+    "Access-Control-Allow-Origin": "https://www.cyber-links.vercel.app", 
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    "Access-Control-Allow-Credentials": "true", // Remove if credentials aren't required
+    "Access-Control-Allow-Credentials": "true",
   };
 }
 
