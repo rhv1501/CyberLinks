@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async headers() {
+  headers() {
     return [
       {
         source: "/api/:path*",
@@ -25,7 +25,7 @@ const nextConfig = {
       },
     ];
   },
-  async rewrites() {
+  rewrites() {
     return [
       {
         source: "/api/:path*",
@@ -33,7 +33,7 @@ const nextConfig = {
       },
     ];
   },
-  async redirects() {
+  redirects() {
     return [
       {
         source: "/api/:path*",
