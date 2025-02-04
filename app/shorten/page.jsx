@@ -12,7 +12,7 @@ const page = () => {
     }
 
     try {
-      const res = await fetch("https://cyber-links.vercel.app/api/generate", {
+      const res = await fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
