@@ -25,7 +25,15 @@ export async function POST(request) {
     const client = await clientPromise;
     const db = client.db("CyberLinks");
     const collection = db.collection("urls");
-    const doc = await collection.findOne({ shorturl: body.shorturl });
+
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Database query timeout")), 5000)
+    );
+
+    const doc = await Promise.race([
+      collection.findOne({ shorturl: body.shorturl }),
+      timeoutPromise,
+    ]);
 
     if (doc) {
       return new Response(
