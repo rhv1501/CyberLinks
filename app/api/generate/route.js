@@ -4,11 +4,6 @@ export async function POST(Request) {
   if (Request.method === "OPTIONS") {
     return new Response(null, {
       status: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
-      },
     });
   }
 
@@ -30,7 +25,6 @@ export async function POST(Request) {
         {
           headers: {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
           },
         }
       );
@@ -45,7 +39,6 @@ export async function POST(Request) {
       {
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
         },
       }
     );
@@ -59,7 +52,6 @@ export async function POST(Request) {
       {
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
         },
       }
     );
