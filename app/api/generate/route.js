@@ -1,5 +1,17 @@
 import clientPromise from "@/lib/mongodb";
+
 export async function POST(Request) {
+  if (Request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
+  }
+
   try {
     const body = await Request.json();
     console.log(body);
@@ -8,48 +20,48 @@ export async function POST(Request) {
     const db = client.db("CyberLinks");
     const collection = db.collection("urls");
     const doc = await collection.findOne({ shorturl: body.shorturl });
+
     if (doc) {
-      return new Response(JSON.stringify({
-        err: true,
-        message: "Short URL already exists",
-        error: e,
-      }), {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      });
-      return new Response(JSON.stringify({
-        err: true,
-        message: "Short URL already exists",
-      }), {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      });
+      return new Response(
+        JSON.stringify({
+          err: true,
+          message: "Short URL already exists",
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
     }
 
-    return new Response(JSON.stringify({
-      err: false,
-      message: "Short URL generated",
-      shorturl: body.shorturl,
-    }), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-    });
+    return new Response(
+      JSON.stringify({
+        err: false,
+        message: "Short URL generated",
+        shorturl: body.shorturl,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
   } catch (e) {
-    return new Response(JSON.stringify({
-      err: true,
-      message: "Error connecting to database",
-      error: e,
-    }), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-    });
+    return new Response(
+      JSON.stringify({
+        err: true,
+        message: "Error connecting to database",
+        error: e,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
   }
 }
