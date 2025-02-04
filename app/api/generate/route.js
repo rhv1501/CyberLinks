@@ -1,9 +1,13 @@
 import clientPromise from "@/lib/mongodb";
 
+// Update this to your actual frontend domain
+const ALLOWED_ORIGIN = "https://cyber-links.vercel.app";
+
+// Helper function to set CORS headers
 function setCorsHeaders(customHeaders = {}) {
   return {
     ...customHeaders,
-    "Access-Control-Allow-Origin": "https://www.cyber-links.vercel.app/", 
+    "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Allow-Credentials": "true",
@@ -11,6 +15,7 @@ function setCorsHeaders(customHeaders = {}) {
 }
 
 export async function POST(request) {
+  // Handle preflight OPTIONS requests
   if (request.method === "OPTIONS") {
     return new Response(null, {
       status: 200,
@@ -19,23 +24,23 @@ export async function POST(request) {
   }
 
   try {
+    console.log("Received POST request to /api/generate");
     const body = await request.json();
-    console.log(body);
+    console.log("Request body:", body);
 
+    const startTime = Date.now();
     const client = await clientPromise;
+    console.log("MongoDB client connected");
+
     const db = client.db("CyberLinks");
     const collection = db.collection("urls");
 
-    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Database query timeout")), 5000)
-    );
-
-    const doc = await Promise.race([
-      collection.findOne({ shorturl: body.shorturl }),
-      timeoutPromise,
-    ]);
+    // Log how long the DB query takes
+    const doc = await collection.findOne({ shorturl: body.shorturl });
+    console.log("Database query time:", Date.now() - startTime, "ms");
 
     if (doc) {
+      console.log("Short URL already exists");
       return new Response(
         JSON.stringify({
           err: true,
@@ -49,6 +54,7 @@ export async function POST(request) {
 
     await collection.insertOne({ shorturl: body.shorturl });
 
+    console.log("Short URL generated successfully");
     return new Response(
       JSON.stringify({
         err: false,
@@ -60,6 +66,7 @@ export async function POST(request) {
       }
     );
   } catch (e) {
+    console.error("Error in POST /api/generate:", e);
     return new Response(
       JSON.stringify({
         err: true,
