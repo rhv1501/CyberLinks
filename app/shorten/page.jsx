@@ -51,7 +51,7 @@ const page = () => {
               onChange={(e) => {
                 setUrl(e.target.value);
               }}
-              value={url.url}
+              value={url}
             />
             <input
               type="text"
@@ -61,7 +61,7 @@ const page = () => {
               onChange={(e) => {
                 setShorturl(e.target.value);
               }}
-              value={url.shorturl}
+              value={Shorturl}
             />
             <button
               className="bg-purple-700 p-2 px-4 rounded-lg shadow-lg font-bold"
