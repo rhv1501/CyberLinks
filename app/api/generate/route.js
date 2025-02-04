@@ -1,10 +1,9 @@
 import clientPromise from "@/lib/mongodb";
 
-// Helper function to set CORS headers
 function setCorsHeaders(customHeaders = {}) {
   return {
     ...customHeaders,
-    "Access-Control-Allow-Origin": "https://www.cyber-links.vercel.app", 
+    "Access-Control-Allow-Origin": "https://www.cyber-links.vercel.app/", 
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Allow-Credentials": "true",
@@ -12,7 +11,6 @@ function setCorsHeaders(customHeaders = {}) {
 }
 
 export async function POST(request) {
-  // Handle preflight OPTIONS request
   if (request.method === "OPTIONS") {
     return new Response(null, {
       status: 200,
