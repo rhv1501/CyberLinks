@@ -12,7 +12,7 @@ const page = () => {
     }
 
     try {
-      const res = await fetch("/api/generate", {
+      const res = await fetch("https://cybe-links.vercel.app/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
