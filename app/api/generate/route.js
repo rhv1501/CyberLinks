@@ -24,11 +24,8 @@ export async function POST(request) {
   }
 
   try {
-    console.log("Received POST request to /api/generate");
     const body = await request.json();
     console.log("Request body:", body);
-
-    const startTime = Date.now();
     const client = await clientPromise;
     console.log("MongoDB client connected");
 
@@ -37,10 +34,7 @@ export async function POST(request) {
 
     // Log how long the DB query takes
     const doc = await collection.findOne({ shorturl: body.shorturl });
-    console.log("Database query time:", Date.now() - startTime, "ms");
-
     if (doc) {
-      console.log("Short URL already exists");
       return new Response(
         JSON.stringify({
           err: true,
@@ -52,9 +46,10 @@ export async function POST(request) {
       );
     }
 
-    await collection.insertOne({ shorturl: body.shorturl });
-
-    console.log("Short URL generated successfully");
+    const result = await collection.insertOne({
+      url: body.url,
+      shorturl: body.shorturl,
+    });
     return new Response(
       JSON.stringify({
         err: false,
