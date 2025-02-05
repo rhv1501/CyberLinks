@@ -2,39 +2,38 @@
 import { useState } from "react";
 
 const page = () => {
-  const [url, setUrl] = useState("");
-  const [Shorturl, setShorturl] = useState("");
-  const [generated, setGenerated] = useState("");
-  const handleForm = async () => {
-    if (!url || !Shorturl) {
-      alert("Please fill in both the URL and short URL fields.");
-      return;
+const [url,seturl]=useState("");
+const [shorturl,setshorturl]=useState("");
+const [generated,setGenerated]=useState("");
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "url": url,
+            "shorturl": shorturl
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("/api/generate", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+                setGenerated(`${process.env.NEXT_PUBLIC_HOST}/${shorturl}`)
+                seturl("")   
+                setshorturl("")
+                console.log(result)
+                alert(result.message)
+
+            })
+            .catch((error) => console.error(error));
     }
 
-    try {
-      const res = await fetch("https://cyber-links.vercel.app/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ url: url, shorturl: Shorturl }),
-      });
-      if (!res.ok) {
-        throw new Error(`Failed to generate short URL. Status: ${res.status}`);
-      }
-
-      const data = await res.json();
-      console.log(data);
-
-      setGenerated(`${process.env.NEXT_PUBLIC_HOST}/${Shorturl}`);
-      setShorturl("");
-      setUrl("");
-      alert(data.message);
-    } catch (error) {
-      console.error("Error:", error);
-      alert(error.message || "An error occurred. Please try again.");
-    }
-  };
   return (
     <>
       <div className="flex flex-col gap-4 items-center justify-center h-screen w-screen">
