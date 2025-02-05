@@ -19,7 +19,7 @@ const Navbar = () => {
             <li>Contact us</li>
           </Link>
           <li className="flex gap-2">
-            <Link href="www.linkedin.com/in/rudresh-h-vyas-286232264?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
+            <Link href="https://www.linkedin.com/in/rudresh-h-vyas-286232264?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
               <button
                 className="bg-blue-700 p-1 px-3 rounded-lg shadow-lg font-bold"
                 type="button"
@@ -55,7 +55,7 @@ const Navbar = () => {
             <Link href="/" className="text-white hover:text-purple-200">
               <li>Home</li>
             </Link>
-            <Link href="/" className="text-white hover:text-purple-200">
+            <Link href="/shorten" className="text-white hover:text-purple-200">
               <li>Shorten</li>
             </Link>
             <Link href="/" className="text-white hover:text-purple-200">
@@ -70,7 +70,7 @@ const Navbar = () => {
                   LinkedIn
                 </button>
               </Link>
-              <Link href="/">
+              <Link href="https://github.com/rhv1501/CyberLinks">
                 <button
                   className="bg-black p-1 px-3 rounded-lg shadow-lg font-bold"
                   type="button"
