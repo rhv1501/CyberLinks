@@ -8,7 +8,6 @@ const page = () => {
   const handleForm = async () => {
     if (!url || !Shorturl) {
       alert("Please fill in both the URL and short URL fields.");
-      return;
     }
 
     try {

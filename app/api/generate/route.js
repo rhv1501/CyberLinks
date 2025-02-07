@@ -1,9 +1,7 @@
 import clientPromise from "@/lib/mongodb";
 
-// Update this to your actual frontend domain
 const ALLOWED_ORIGIN = "https://cyber-links.vercel.app";
 
-// Helper function to set CORS headers
 function setCorsHeaders(customHeaders = {}) {
   return {
     ...customHeaders,
@@ -15,7 +13,6 @@ function setCorsHeaders(customHeaders = {}) {
 }
 
 export async function POST(request) {
-  // Handle preflight OPTIONS requests
   if (request.method === "OPTIONS") {
     return new Response(null, {
       status: 200,
@@ -29,10 +26,8 @@ export async function POST(request) {
     const client = await clientPromise;
     console.log("MongoDB client connected");
 
-    const db = client.db("CyberLinks");
+    const db = client.db("cyberlinks");
     const collection = db.collection("urls");
-
-    // Log how long the DB query takes
     const doc = await collection.findOne({ shorturl: body.shorturl });
     if (doc) {
       return new Response(
