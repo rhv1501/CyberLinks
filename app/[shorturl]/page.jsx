@@ -1,5 +1,6 @@
-import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
+import { NextResponse } from "next/server";
 
 const Page = async ({ params }) => {
   const shorturl = params.shorturl;
@@ -9,9 +10,9 @@ const Page = async ({ params }) => {
   const doc = await collection.findOne({ shorturl: shorturl });
 
   if (doc) {
-    redirect(doc.url);
+    return NextResponse.redirect(doc.url);
   } else {
-    redirect("/error");
+    return NextResponse.redirect("/error");
   }
 
   return (
