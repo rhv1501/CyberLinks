@@ -16,7 +16,10 @@ export default async function Page({ params }) {
   const doc = await collection.findOne({ shorturl });
 
   if (doc) {
-    permanentRedirect(doc.url);
+    const destinationUrl = doc.url;
+    if (destinationUrl !== `/${shorturl}`) {
+      permanentRedirect(destinationUrl);
+    }
   } else {
     permanentRedirect("/error");
   }
