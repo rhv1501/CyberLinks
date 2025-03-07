@@ -26,7 +26,7 @@ export async function POST(request) {
     const client = await clientPromise;
     console.log("MongoDB client connected");
 
-    const db = client.db("cyberlinks");
+    const db = client.db("CyberLinks");
     const collection = db.collection("urls");
     const doc = await collection.findOne({ shorturl: body.shorturl });
     if (doc) {

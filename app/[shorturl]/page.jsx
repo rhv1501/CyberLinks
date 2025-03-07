@@ -1,25 +1,23 @@
-import { NextResponse } from "next/server";
+// app/[shorturl]/page.js
+import { redirect } from "next/navigation";
 import clientPromise from "@/lib/mongodb";
-import { NextResponse } from "next/server";
 
-const Page = async ({ params }) => {
-  const shorturl = params.shorturl;
+export async function generateMetadata({ params }) {
+  const { shorturl } = await params;
+  return {};
+}
+
+export default async function Page({ params }) {
+  const param = await params;
+  const shorturl = param.shorturl;
   const client = await clientPromise;
   const db = client.db("CyberLinks");
   const collection = db.collection("urls");
-  const doc = await collection.findOne({ shorturl: shorturl });
+  const doc = await collection.findOne({ shorturl });
 
   if (doc) {
-    return NextResponse.redirect(doc.url);
+    redirect(doc.url);
   } else {
-    return NextResponse.redirect("/error");
+    redirect("/error");
   }
-
-  return (
-    <>
-      <div>Redirecting...</div>
-    </>
-  );
-};
-
-export default Page;
+}
