@@ -16,7 +16,11 @@ export default async function Page({ params }) {
   const doc = await collection.findOne({ shorturl });
 
   if (doc) {
-    redirect(doc.url);
+    try {
+      redirect(doc.url);
+    } catch (e) {
+      console.error("Error in redirecting:", e);
+    }
   } else {
     redirect("/error");
   }
