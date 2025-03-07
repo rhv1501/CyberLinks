@@ -1,5 +1,5 @@
 // app/[shorturl]/page.js
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 import clientPromise from "@/lib/mongodb";
 
 export async function generateMetadata({ params }) {
@@ -16,12 +16,8 @@ export default async function Page({ params }) {
   const doc = await collection.findOne({ shorturl });
 
   if (doc) {
-    try {
-      redirect(doc.url);
-    } catch (e) {
-      console.error("Error in redirecting:", e);
-    }
+    permanentRedirect(doc.url);
   } else {
-    redirect("/error");
+    permanentRedirect("/error");
   }
 }
