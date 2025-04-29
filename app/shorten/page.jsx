@@ -1,90 +1,95 @@
 "use client";
 import { useState } from "react";
 
-const page = () => {
+export default function Page() {
   const [url, setUrl] = useState("");
-  const [Shorturl, setShorturl] = useState("");
+  const [shorturl, setShorturl] = useState("");
   const [generated, setGenerated] = useState("");
-  const handleForm = async () => {
-    if (!url || !Shorturl) {
-      alert("Please fill in both the URL and short URL fields.");
-    }
+  const [error, setError] = useState("");
 
+  const handleForm = async () => {
     try {
+      setError("");
+
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ url: url, shorturl: Shorturl }),
+        body: JSON.stringify({ url, shorturl }),
       });
-      if (!res.ok) {
-        throw new Error(`Failed to generate short URL. Status: ${res.status}`);
-      }
 
       const data = await res.json();
-      console.log(data);
 
-      setGenerated(`${process.env.NEXT_PUBLIC_HOST}/${Shorturl}`);
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to generate short URL");
+      }
+
+      setGenerated(`${window.location.origin}/${shorturl}`);
       setShorturl("");
       setUrl("");
-      alert(data.message);
     } catch (error) {
-      console.error("Error:", error);
-      alert(error.message || "An error occurred. Please try again.");
+      setError(error.message);
     }
   };
-  return (
-    <>
-      <div className="flex flex-col gap-4 items-center justify-center h-screen w-screen">
-        <div className="w-full bg-purple-500 p-4 rounded-lg shadow-lg lg:w-[30%]">
-          <div className="font-bold text-lg text-center mb-2">
-            Shorten your link
-          </div>
-          <div className="flex flex-col gap-4 items-center">
-            <input
-              type="text"
-              placeholder="Enter your link here"
-              className="p-2 rounded-lg w-80 text-black lg:w-96"
-              name="url"
-              onChange={(e) => {
-                setUrl(e.target.value);
-              }}
-              value={url}
-            />
-            <input
-              type="text"
-              placeholder="Enter your custom short link name"
-              className="p-2 rounded-lg w-80 text-black lg:w-96"
-              name="shorturl"
-              onChange={(e) => {
-                setShorturl(e.target.value);
-              }}
-              value={Shorturl}
-            />
-            <button
-              className="bg-purple-700 p-2 px-4 rounded-lg shadow-lg font-bold"
-              type="button"
-              onClick={handleForm}
-            >
-              Shorten
-            </button>
-          </div>
-        </div>
 
-        {generated && (
-          <div className="mt-4">
-            <p className="font-bold text-lg text-center">
-              Your shortened link:{" "}
-              <a href={generated} target="__blank">
-                {generated}
-              </a>
-            </p>
+  return (
+    <div className="flex flex-col gap-4 items-center justify-center min-h-screen bg-gray-900">
+      <div className="w-full max-w-md bg-purple-500 p-6 rounded-lg shadow-lg">
+        <h1 className="font-bold text-xl text-center text-white mb-4">
+          Shorten your link
+        </h1>
+
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+            {error}
           </div>
         )}
-      </div>
-    </>
-  );
-};
 
-export default page;
+        <div className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="Enter your URL here"
+            className="p-3 rounded-lg w-full text-black"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+          />
+
+          <input
+            type="text"
+            placeholder="Choose your custom short URL"
+            className="p-3 rounded-lg w-full text-black"
+            value={shorturl}
+            onChange={(e) => setShorturl(e.target.value)}
+          />
+
+          <button
+            className="bg-purple-700 p-3 rounded-lg shadow-lg font-bold text-white hover:bg-purple-800 transition-colors"
+            type="button"
+            onClick={handleForm}
+            disabled={!url || !shorturl}
+          >
+            Shorten URL
+          </button>
+        </div>
+      </div>
+
+      {generated && (
+        <div className="mt-4 bg-green-100 p-4 rounded-lg max-w-md w-full">
+          <p className="text-center text-green-800">
+            <span className="font-bold">Your shortened URL:</span>
+            <br />
+            <a
+              href={generated}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 break-all"
+            >
+              {generated}
+            </a>
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}

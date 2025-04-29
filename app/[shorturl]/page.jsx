@@ -1,26 +1,21 @@
-// app/[shorturl]/page.js
-import { permanentRedirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import clientPromise from "@/lib/mongodb";
 
-export async function generateMetadata({ params }) {
-  const { shorturl } = await params;
-  return {};
-}
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function Page({ params }) {
-  const param = await params;
-  const shorturl = param.shorturl;
+  const { shorturl } = await params;
+
   const client = await clientPromise;
   const db = client.db("CyberLinks");
-  const collection = db.collection("urls");
-  const doc = await collection.findOne({ shorturl });
+  const urlData = await db.collection("urls").findOne({ shorturl });
 
-  if (doc) {
-    const destinationUrl = doc.url;
-    if (destinationUrl !== `/${shorturl}`) {
-      permanentRedirect(destinationUrl);
-    }
-  } else {
-    permanentRedirect("/error");
+  if (!urlData) {
+    throw new Error("URL not found");
   }
+
+  await db.collection("urls").updateOne({ shorturl }, { $inc: { visits: 1 } });
+
+  redirect(urlData.url);
 }
