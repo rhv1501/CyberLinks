@@ -34,8 +34,8 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col gap-4 items-center justify-center min-h-screen bg-gray-900">
-      <div className="w-full max-w-md bg-purple-500 p-6 rounded-lg shadow-lg">
+    <div className="flex flex-col gap-4 items-center justify-center min-h-screen bg-gradient-to-r from-purple-900 via-purple-700 to-purple-600">
+      <div className="w-full max-w-md bg-[#000000ad] p-6 rounded-lg shadow-lg">
         <h1 className="font-bold text-xl text-center text-white mb-4">
           Shorten your link
         </h1>
