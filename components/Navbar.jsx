@@ -6,8 +6,10 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <nav className="bg-gray-500 h-12 flex justify-around items-center px-3 text-white">
-        <div className="logo font-bold text-lg font-mono">CyberLinks</div>
+      <nav className="bg-[#0000009f] h-12 flex justify-around items-center px-3 text-white fixed top-0 left-0 right-0 z-50 backdrop-blur-md z-10">
+        <div className="logo font-bold text-lg font-mono animate-pulse">
+          CyberLinks
+        </div>
         <ul className="hidden lg:flex lg:justify-center lg:gap-4 lg:items-center">
           <Link href="/" className="text-white hover:text-purple-200">
             <li>Home</li>
